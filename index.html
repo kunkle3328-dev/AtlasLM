@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>AtlasLM Studio | Deep Learning Workspace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              background: "#0B0F14", // Studio Dark
+              panel: "rgba(20, 24, 31, 0.72)",
+              elevated: "rgba(32, 36, 44, 0.85)",
+              border: "rgba(255, 255, 255, 0.08)",
+              primary: "#E6E8EC",
+              secondary: "#A8AFBF",
+              accent: "#7C8CFF", // Periwinkle Blue
+              accentHover: "#6370E0",
+              teal: "#5EEAD4",
+            },
+            fontFamily: {
+              sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+              serif: ['Playfair Display', 'serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            },
+            animation: {
+              'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'shimmer': 'shimmer 2s linear infinite',
+              'pop': 'pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards', // Premium pop with bounce
+              'typing': 'typing 1.4s infinite ease-in-out both',
+            },
+            keyframes: {
+              shimmer: {
+                '0%': { transform: 'translateX(-100%)' },
+                '100%': { transform: 'translateX(100%)' }
+              },
+              pop: {
+                '0%': { transform: 'scale(0.8)', opacity: '0' },
+                '100%': { transform: 'scale(1)', opacity: '1' }
+              },
+              typing: {
+                '0%, 80%, 100%': { transform: 'scale(0)' },
+                '40%': { transform: 'scale(1)' }
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+      body {
+        background-color: #0B0F14;
+        color: #E6E8EC;
+        font-family: 'Inter', sans-serif;
+        overflow: hidden;
+        /* Mobile safe area handling */
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+      .glass-panel {
+        background: var(--bg-panel);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .glass-card:hover {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(124, 140, 255, 0.3); /* Accent border on hover */
+        transform: translateY(-1px);
+      }
+      
+      /* Studio Inputs */
+      .studio-input {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #fff;
+        transition: border-color 0.2s;
+      }
+      .studio-input:focus {
+        border-color: #7C8CFF;
+        outline: none;
+      }
+
+      /* Custom Scrollbar - High Visibility */
+      ::-webkit-scrollbar { width: 6px; height: 6px; }
+      ::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
+      ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+      ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.4); }
+
+      /* Typography */
+      h1, h2, h3 { letter-spacing: -0.02em; }
+      
+      /* Markdown Styles */
+      .markdown-body h1, .markdown-body h2 { font-family: 'Playfair Display', serif; margin-top: 1.5em; margin-bottom: 0.5em; color: #fff; }
+      .markdown-body h3 { font-family: 'Inter', sans-serif; font-weight: 600; color: #E6E8EC; margin-top: 1.2em; }
+      .markdown-body p { margin-bottom: 1em; line-height: 1.6; color: #D1D5DB; }
+      .markdown-body ul { list-style-type: disc; padding-left: 1.5em; margin-bottom: 1em; }
+      .markdown-body strong { color: #fff; font-weight: 600; }
+      .markdown-body blockquote { border-left: 3px solid #7C8CFF; padding-left: 1em; color: #A8AFBF; font-style: italic; }
+
+      /* Animation Polyfills (since we don't have tailwindcss-animate) */
+      .animate-in { animation-duration: 0.4s; animation-fill-mode: forwards; animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1); opacity: 0; }
+      .fade-in { animation-name: fadeIn; }
+      .zoom-in { animation-name: zoomIn; }
+      .zoom-in-95 { animation-name: zoomIn95; }
+      .slide-in-from-bottom-2 { animation-name: slideInBottom2; }
+      .slide-in-from-bottom-4 { animation-name: slideInBottom4; }
+      .slide-in-from-bottom-10 { animation-name: slideInBottom10; }
+      .slide-in-from-top-2 { animation-name: slideInTop2; }
+      
+      @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+      @keyframes zoomIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+      @keyframes zoomIn95 { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+      @keyframes slideInBottom2 { from { transform: translateY(0.5rem); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+      @keyframes slideInBottom4 { from { transform: translateY(1rem); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+      @keyframes slideInBottom10 { from { transform: translateY(2.5rem); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+      @keyframes slideInTop2 { from { transform: translateY(-0.5rem); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+      /* Mobile Utilities */
+      .safe-pb { padding-bottom: calc(1rem + env(safe-area-inset-bottom)); }
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+    <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "uuid": "https://esm.sh/uuid@^13.0.0",
+    "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
+    "marked": "https://esm.sh/marked@^17.0.1",
+    "pdfjs-dist": "https://esm.sh/pdfjs-dist@3.11.174",
+    "react/": "https://esm.sh/react@^19.2.3/"
+  }
+}
+</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    </script>
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

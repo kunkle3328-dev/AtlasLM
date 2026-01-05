@@ -1,0 +1,7 @@
+{
+  "name": "AtlasLM",
+  "description": "Professional source-grounded research assistant with Studio artifacts and Audio Overviews.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
